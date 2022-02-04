@@ -1,0 +1,13 @@
+.timer{
+    text-align: right;
+}
+
+.highscore{
+    text-align: left;
+}
+
+header {
+    padding: 40px;
+    text-align: center;
+    border-bottom: 30px;
+}
