@@ -12,7 +12,7 @@ var timer;
 var timerCount = 30;
 
 function startTimer() {
-    timer = setInterval(function () {
+    timer = setInterval(function() {
         timerCount--;
         timerElement.textContent = timerCount + " seconds left";
 
@@ -26,8 +26,7 @@ function startTimer() {
 
 // Array of Questions and Answers
 
-var questions = [
-    {
+var questions = [{
         question: "Commonly used date types DO NOT include:",
         answers: {
             1: "strings",
@@ -113,12 +112,11 @@ var userScore = 0;
 
 function userAnswer(event) {
     userChoice = event.target;
-// Display feedback and update score/time if right or wrong
+    // Display feedback and update score/time if right or wrong
     if (userChoice.textContent === currentQuestion.answers[currentQuestion.correctAnswer]) {
         answerCheck.textContent = "Correct"
         userScore = userScore + 10;
-    }
-    else {
+    } else {
         answerCheck.textContent = "Wrong";
         timerCount = timerCount - 10;
     }
@@ -138,7 +136,7 @@ function userResults() {
     quizAnswers.style.display = "none"
 
     userScore = userScore + timerCount;
-// Display current Score and shows initial input form
+    // Display current Score and shows initial input form
     var userFinalScore = "Your score: " + userScore;
     document.getElementById("score").textContent = userFinalScore;
     document.getElementById("initial-form").style.visibility = "visible";
@@ -222,13 +220,11 @@ function submitScore(event) {
 // Event Listenter for start quiz button, back button and clear button
 startButton.addEventListener("click", generateQuiz);
 
-backButton.addEventListener("click", function () {
+backButton.addEventListener("click", function() {
     location.reload();
 });
 
-clearButton.addEventListener("click", function () {
+clearButton.addEventListener("click", function() {
     localStorage.clear();
     document.querySelectorAll(".table-row").forEach((element) => element.remove());
 });
-
-
