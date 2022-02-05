@@ -12,8 +12,7 @@
 <body>
     <header>
         <nav>
-            <div class ="timer"></div>
-            <div class ="highscore"></div> 
+            <div id="timer"></div>
         </nav>
         <h1>Coding Quiz Challenge</h1>
         <p>Try to answer the following code-related questions withing the time limit. Keep in mind the incorrect
@@ -22,24 +21,24 @@
     </header>
 <main>
     <div>
-        <h2 class="questions"></h2>
-        <p class="answer-choices"></p>
+        <h2 id="questions"></h2>
+        <p id="answer-choices"></p>
     </div>
     <div>
-        <h3 class="answer-check"></h3>
+        <h3 id="answer-check"></h3>
     </div>
     <div>
-        <h3 class="score"></h3>
+        <h3 id="score"></h3>
     </div>
     <div>
-        <table class="high-score-table">
+        <table id="high-score-table">
             <tr>
                 <th>Name</th>
                 <th>Score</th>
             </tr>
         </table>
     </div>
-    <form action="#" id="intial-form" method="get">
+    <form id="initial-form" method="get">
         <label for="initials">Initials:</label>
         <input type="text" id="initials" name="initials" /><br /><br />
         <input type="submit" value="Submit" id="submit" />

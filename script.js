@@ -1,13 +1,13 @@
 // Query Selector Variables
 var startButton = document.querySelector("#start-quiz");
-var quizQuestions = document.querySelector(".questions");
-var quizAnswers = document.querySelector(".answer-choices");
+var quizQuestions = document.querySelector("#questions");
+var quizAnswers = document.querySelector("#answer-choices");
 
 
 
 
 //Timer
-var timerElement = document.querySelector(".timer")
+var timerElement = document.querySelector("#timer")
 var timer;
 var timerCount = 60;
 var currentQ;
@@ -105,7 +105,7 @@ function generateQuestions() {
 
 // Check is the user selected the right choice
 
-var answerCheck = document.getElementsByClassName("answer-check");
+var answerCheck = document.getElementById("answer-check");
 var userScore = 0;
 
 function userAnswer(event) {
@@ -132,8 +132,8 @@ function userResults() {
     quizAnswers.style.display = "none"
 
     var userFinalScore = "Your score: " + userScore;
-    document.getElementsByClassName("score").textContent = userFinalScore;
-    document.getElementsById("inital-form").style.visibility = "visible";
+    document.getElementById("score").textContent = userFinalScore;
+    document.getElementById("initial-form").style.visibility = "visible";
 
     var userScoreSubmit = document.getElementById("submit");
     userScoreSubmit.addEventListener("click", submitScore);
@@ -155,7 +155,7 @@ if (userScoreList === null) {
 function submitScore(event) {
     event.preventDefault();
 
-    document.getElementsByClassName("initial-form").style.visibility = "hidden";
+    document.getElementById("initial-form").style.visibility = "hidden";
     answerCheck.textContent = "";
 
     var userScoreSubmit = document.getElementById("submit");
@@ -179,7 +179,7 @@ function submitScore(event) {
     // Send scores to the table
     function displayScores() {
         // High score table visible
-        var visibleTable = document.getElementsByClassName("high-score-table");
+        var visibleTable = document.getElementById("high-score-table");
         visibleTable.style.visibility = "visible";
 
         // Create a for loop that creates and append a table row for each high score

@@ -1,9 +1,5 @@
-.timer{
+#timer{
     text-align: right;
-}
-
-.highscore{
-    text-align: left;
 }
 
 header {
@@ -11,3 +7,16 @@ header {
     text-align: center;
     border-bottom: 30px;
 }
+
+main{
+text-align: center;
+}
+
+#initial-form{
+    visibility: hidden;
+}
+
+#high-score-table{
+    visibility: hidden;
+}
+
