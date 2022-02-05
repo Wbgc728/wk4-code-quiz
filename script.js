@@ -9,9 +9,7 @@ var quizAnswers = document.querySelector("#answer-choices");
 //Timer
 var timerElement = document.querySelector("#timer")
 var timer;
-var timerCount = 60;
-var currentQ;
-var qIndex = 0;
+var timerCount = 30;
 
 function startTimer() {
     timer = setInterval(function () {
@@ -27,6 +25,7 @@ function startTimer() {
 
 
 // Array of Questions and Answers
+
 var questions = [
     {
         question: "Commonly used date types DO NOT include:",
@@ -66,7 +65,7 @@ var questions = [
             3: "quotes",
             4: "parenthesis",
         },
-        correctAnswer: 1
+        correctAnswer: 3
     },
     {
         question: "A very useful tool used during development and debugging for printing content to the debuggers is:",
@@ -81,22 +80,27 @@ var questions = [
 ];
 
 
+// Start Timer, disable start button, call questions
 function generateQuiz() {
     startTimer();
     startButton.disabled = true;
     generateQuestions();
 }
 
+var currentQuestion;
+var qIndex = 0;
+
 function generateQuestions() {
-    currentQ = questions[qIndex];
-    quizQuestions.textContent = currentQ.question;
+    currentQuestion = questions[qIndex];
+    quizQuestions.textContent = currentQuestion.question;
 
-    var key = Object.keys(currentQ.answers);
+    var key = Object.keys(currentQuestion.answers);
 
-    quizAnswers.innerHTML = "";
+    quizAnswers.textContent = "";
+    // create buttons based on question answer choices
     for (var i = 0; i < key.length; i++) {
         var answerButton = document.createElement("button")
-        answerButton.textContent = currentQ.answers[key[i]];
+        answerButton.textContent = currentQuestion.answers[key[i]];
         answerButton.addEventListener("click", userAnswer);
         quizAnswers.appendChild(answerButton);
     }
@@ -104,14 +108,13 @@ function generateQuestions() {
 }
 
 // Check is the user selected the right choice
-
 var answerCheck = document.getElementById("answer-check");
 var userScore = 0;
 
 function userAnswer(event) {
     userChoice = event.target;
-
-    if (userChoice.textContent === currentQ.answers[currentQ.correctAnswer]) {
+// Display feedback and update score/time if right or wrong
+    if (userChoice.textContent === currentQuestion.answers[currentQuestion.correctAnswer]) {
         answerCheck.textContent = "Correct"
         userScore = userScore + 10;
     }
@@ -119,18 +122,23 @@ function userAnswer(event) {
         answerCheck.textContent = "Wrong";
         timerCount = timerCount - 10;
     }
+    // Call next question if available and if time
     if (qIndex < questions.length && timerCount > 0) {
         generateQuestions();
     }
+    // if no time or more questions call results function
     else {
         userResults();
     }
 }
 
 function userResults() {
+    // Hide question and answers
     quizQuestions.style.display = "none"
     quizAnswers.style.display = "none"
 
+    userScore = userScore + timerCount;
+// Display current Score and shows initial input form
     var userFinalScore = "Your score: " + userScore;
     document.getElementById("score").textContent = userFinalScore;
     document.getElementById("initial-form").style.visibility = "visible";
@@ -140,8 +148,7 @@ function userResults() {
 }
 
 
-// If nothing in user storage, use info in array
-
+//checks local storage,for previous scores and initailizes if none
 var userInitials = JSON.parse(localStorage.getItem("initials"));
 if (userInitials === null) {
     userInitials = [];
@@ -152,58 +159,76 @@ if (userScoreList === null) {
     userScoreList = [];
 }
 
+
+// define back and clear buttons
+var backButton = document.getElementById("back");
+var clearButton = document.getElementById("clear");
+
+// save score to local storage
 function submitScore(event) {
     event.preventDefault();
 
+    // rehide form and button
     document.getElementById("initial-form").style.visibility = "hidden";
     answerCheck.textContent = "";
 
     var userScoreSubmit = document.getElementById("submit");
     userScoreSubmit.style.visibility = "hidden";
 
-    // Set score and initials to local storage, option 1
     userScoreList.push(userScore);
     localStorage.setItem("score", JSON.stringify(userScoreList));
 
-    // Set initials to local storage, option 1
     var userInitialsInput = document.getElementById("initials");
     userInitials.push(userInitialsInput.value);
 
     localStorage.setItem("initials", JSON.stringify(userInitials));
 
-    // Clears the initial input value
+    // Clears the initial input value and previous result feedback
     userInitialsInput.value = "";
+    answerCheck.textContent = "";
+
 
     displayScores();
 
-    // Send scores to the table
+    // Display scores in the table
     function displayScores() {
-        // High score table visible
-        var visibleTable = document.getElementById("high-score-table");
-        visibleTable.style.visibility = "visible";
 
-        // Create a for loop that creates and append a table row for each high score
+        // Show High score table and clear & back buttons
+        var highScoreTable = document.getElementById("high-score-table");
+        highScoreTable.style.visibility = "visible";
+
+        backButton.style.visibility = "visible";
+        clearButton.style.visibility = "visible";
+
+        // for loop that adds a row for each score
         for (let i = 0; i < userInitials.length; i++) {
             var newTableRow = document.createElement("tr");
             newTableRow.classList.add("table-row");
-            var tableDataOne = document.createElement("td");
-            var tableDataTwo = document.createElement("td");
+            var tableInitials = document.createElement("td");
+            var tableScores = document.createElement("td");
 
-            tableDataOne.innerHTML = userInitials[i];
-            tableDataTwo.innerHTML = userScoreList[i];
+            tableInitials.textContent = userInitials[i];
+            tableScores.textContent = userScoreList[i];
 
-            newTableRow.append(tableDataOne, tableDataTwo);
+            newTableRow.append(tableInitials, tableScores);
 
-            visibleTable.appendChild(newTableRow);
+            highScoreTable.appendChild(newTableRow);
         }
     }
 };
 
 
 
-// Event Listenter for start quiz button
+// Event Listenter for start quiz button, back button and clear button
 startButton.addEventListener("click", generateQuiz);
 
-// resetQuiz.addEventListener("click",function () {
-//     location.reload();
-// });
+backButton.addEventListener("click", function () {
+    location.reload();
+});
+
+clearButton.addEventListener("click", function () {
+    localStorage.clear();
+    document.querySelectorAll(".table-row").forEach((element) => element.remove());
+});
+
+
